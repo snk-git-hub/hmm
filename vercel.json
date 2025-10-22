@@ -1,13 +1,8 @@
 {
-  "name": "sherlon-bed-calculator",
-  "version": "1.0.0",
-  "description": "Sherlon Sleepcare Bed Price Calculator",
-  "main": "index.html",
-  "scripts": {
-    "start": "serve .",
-    "build": "echo 'No build needed'"
-  },
-  "keywords": ["sherlon", "mattress", "calculator"],
-  "author": "Sherlon Sleepcare",
-  "license": "ISC"
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
