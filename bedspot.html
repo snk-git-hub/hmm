@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherlon Sleepcare - Price Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(to bottom right, #faf5ff, #fce7f3);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 28rem;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, #9333ea, #4f46e5);
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .header .subtitle {
+            color: #e9d5ff;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header .year {
+            color: #ddd6fe;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .content {
+            padding: 1.5rem;
+        }
+
+        .unit-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .unit-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .unit-btn.active {
+            background: linear-gradient(to right, #9333ea, #4f46e5);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .unit-btn:not(.active) {
+            background: #f3e8ff;
+            color: #9333ea;
+        }
+
+        .unit-btn:not(.active):hover {
+            background: #e9d5ff;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-left: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: #f3e8ff;
+            border: 2px solid #e9d5ff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #9333ea;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box .icon {
+            color: #2563eb;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .info-box .text {
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+
+        .info-box .text strong {
+            font-weight: 600;
+        }
+
+        .info-box .conversion {
+            font-size: 0.75rem;
+            color: #2563eb;
+            margin-top: 0.25rem;
+        }
+
+        .mattress-list {
+            max-height: 24rem;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .mattress-card {
+            padding: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.75rem;
+            background: #f3e8ff;
+            border: 2px solid transparent;
+        }
+
+        .mattress-card:hover {
+            background: #e9d5ff;
+        }
+
+        .mattress-card.selected {
+            background: linear-gradient(to right, #f3e8ff, #fce7f3);
+            border-color: #c084fc;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .mattress-content {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .mattress-image {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #f3f4f6;
+            flex-shrink: 0;
+        }
+
+        .mattress-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mattress-details {
+            flex: 1;
+        }
+
+        .mattress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .mattress-name {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .mattress-category {
+            font-size: 0.75rem;
+            color: #4b5563;
+        }
+
+        .heart-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.2s;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .heart-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: none;
+            stroke: #9ca3af;
+            stroke-width: 2;
+        }
+
+        .heart-icon.favorited {
+            fill: #ef4444;
+            stroke: #ef4444;
+        }
+
+        .mattress-price {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #9333ea;
+            margin: 0.5rem 0;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.25rem;
+            margin: 0.5rem 0;
+        }
+
+        .star {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        .star.filled {
+            fill: #fbbf24;
+            stroke: #fbbf24;
+        }
+
+        .star.empty {
+            fill: none;
+            stroke: #d1d5db;
+        }
+
+        .mattress-description {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, #9333ea, #4f46e5);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .calculate-btn:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            padding-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SHERLON SLEEPCARE</h1>
+            <p class="subtitle">Dynamic Price Calculator</p>
+            <p class="year">Since 2001 | Price List 2025-26</p>
+        </div>
+
+        <div class="content">
+            <!-- Unit Selection -->
+            <div class="unit-buttons">
+                <button class="unit-btn active" data-unit="IN" onclick="selectUnit('IN')">✓ IN</button>
+                <button class="unit-btn" data-unit="CM" onclick="selectUnit('CM')">✓ CM</button>
+                <button class="unit-btn" data-unit="FT" onclick="selectUnit('FT')">✓ FT</button>
+            </div>
+
+            <!-- Input Fields -->
+            <div class="input-group">
+                <label id="thickness-label">Thickness (IN)</label>
+                <input type="number" id="thickness" placeholder="Enter thickness in IN" step="0.1" oninput="updatePrices()">
+            </div>
+            <div class="input-group">
+                <label id="width-label">Width (IN)</label>
+                <input type="number" id="width" placeholder="Enter width in IN" step="0.1" oninput="updatePrices()">
+            </div>
+            <div class="input-group">
+                <label id="length-label">Length (IN)</label>
+                <input type="number" id="length" placeholder="Enter length in IN" step="0.1" oninput="updatePrices()">
+            </div>
+
+            <!-- Info Box -->
+            <div id="info-box" class="info-box hidden">
+                <div class="icon">ℹ️</div>
+                <div class="text">
+                    <strong>Calculating for:</strong>
+                    <p id="dimensions-display"></p>
+                    <p id="conversion-display" class="conversion"></p>
+                </div>
+            </div>
+
+            <!-- Mattress List -->
+            <div class="mattress-list" id="mattress-list"></div>
+
+            <!-- Calculate Button -->
+            <button class="calculate-btn" onclick="showFinalPrice()">Calculate Final Price</button>
+
+            <div class="footer">
+                <p>Century Fibre Foams | Kannur, Kerala</p>
+                <p>www.sherlon.in</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentUnit = 'IN';
+        let selectedBed = null;
+        let favorites = new Set();
+
+        // Mattress Data
+        const mattressModels = [
+            {
+                id: 'mediplus-memory',
+                name: 'MEDI PLUS MEMORY ORTHO',
+                category: 'Memory Foam Premium',
+                description: 'Memory Quilted Fabric with SuperSoft Foam',
+                rating: 5,
+                image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200&h=200&fit=crop',
+                basePrice6: 14799,
+                basePrice8: 17299,
+                baseSize: { length: 72, width: 30 },
+                pricePerSqIn: 1.16
+            },
+            {
+                id: 'sonet-memory',
+                name: 'SONET MEMORY FOAM',
+                category: 'Memory Foam',
+                description: 'Cooling Gel Memory Foam with High Density HR',
+                rating: 4.5,
+                image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=200&h=200&fit=crop',
+                basePrice6: 10999,
+                basePrice8: 13499,
+                baseSize: { length: 72, width: 30 },
+                pricePerSqIn: 1.16
+            },
+            {
+                id: 'gaala',
+                name: 'GAALA EURO TOP ORTHO',
+                category: 'Euro Top',
+                description: 'SuperSoft Foam with Orthopedic Rebonded Support',
+                rating: 4.5,
+                image: 'https://images.unsplash.com/photo-1615529182904-14b682f3f0b7?w=200&h=200&fit=crop',
+                basePrice6: 8999,
+                basePrice8: 10999,
+                baseSize: { length: 72, width: 30 },
+                pricePerSqIn: 0.93
+            },
+            {
+                id: 'sonet-plus-memory',
+                name: 'SONET PLUS MEMORY FOAM',
+                category: 'Memory Foam',
+                description: 'High Density HR Foam with Memory Quilted Fabric',
+                rating: 4.5,
+                image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=200&fit=crop',
+                basePrice6: 11499,
+                basePrice8: 13499,
+                baseSize: { length: 72, width: 30 },
+                pricePerSqIn: 0.93
+            },
+            {
+                id: 'zara-memory',
+                name: 'ZARA MEMORY POCKETED SPRING',
+                category: 'Premium Spring',
+                description: 'Memory Quilted with Pocketed Spring Unit',
+                rating: 5,
+                image: 'https://images.unsplash.com/photo-1616594039960-c9053d3c0b1c?w=200&h=200&fit=crop',
+                basePrice6: 12999,
+                basePrice8: 16499,
+                baseSize: { length: 72, width: 30 },
+                pricePerSqIn: 1.62
+            }
+        ];
+
+        // Conversion Functions
+        function convertToInches(value, fromUnit) {
+            const num = parseFloat(value);
+            if (isNaN(num)) return 0;
+            if (fromUnit === 'CM') return num / 2.54;
+            if (fromUnit === 'FT') return num * 12;
+            return num;
+        }
+
+        // Calculate Price
+        function calculatePrice(mattress) {
+            const thickness = document.getElementById('thickness').value;
+            const width = document.getElementById('width').value;
+            const length = document.getElementById('length').value;
+
+            if (!thickness || !width || !length) return null;
+
+            const t = parseFloat(thickness);
+            const w = parseFloat(width);
+            const l = parseFloat(length);
+
+            if (isNaN(t) || isNaN(w) || isNaN(l) || t <= 0 || w <= 0 || l <= 0) return null;
+
+            const thicknessInches = convertToInches(t, currentUnit);
+            const widthInches = convertToInches(w, currentUnit);
+            const lengthInches = convertToInches(l, currentUnit);
+
+            const area = widthInches * lengthInches;
+            const baseArea = mattress.baseSize.length * mattress.baseSize.width;
+
+            let basePrice;
+            if (thicknessInches <= 6) {
+                basePrice = mattress.basePrice6;
+            } else if (thicknessInches <= 7) {
+                const ratio = (thicknessInches - 6) / 2;
+                basePrice = mattress.basePrice6 + (mattress.basePrice8 - mattress.basePrice6) * ratio;
+            } else {
+                basePrice = mattress.basePrice8;
+                if (thicknessInches > 8) {
+                    const extraThickness = thicknessInches - 8;
+                    basePrice += extraThickness * (mattress.basePrice8 - mattress.basePrice6) * 0.5;
+                }
+            }
+
+            const areaDiff = area - baseArea;
+            const price = basePrice + (areaDiff * mattress.pricePerSqIn);
+
+            return Math.round(price);
+        }
+
+        // Format Price
+        function formatPrice(price) {
+            if (!price) return '₹ --';
+            return `₹ ${price.toLocaleString('en-IN')}`;
+        }
+
+        // Select Unit
+        function selectUnit(unit) {
+            currentUnit = unit;
+            document.querySelectorAll('.unit-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.unit === unit);
+            });
+            
+            document.getElementById('thickness-label').textContent = `Thickness (${unit})`;
+            document.getElementById('width-label').textContent = `Width (${unit})`;
+            document.getElementById('length-label').textContent = `Length (${unit})`;
+            
+            document.getElementById('thickness').placeholder = `Enter thickness in ${unit}`;
+            document.getElementById('width').placeholder = `Enter width in ${unit}`;
+            document.getElementById('length').placeholder = `Enter length in ${unit}`;
+            
+            updatePrices();
+        }
+
+        // Toggle Favorite
+        function toggleFavorite(bedId) {
+            if (favorites.has(bedId)) {
+                favorites.delete(bedId);
+            } else {
+                favorites.add(bedId);
+            }
+            renderMattresses();
+        }
+
+        // Select Bed
+        function selectBed(bedId) {
+            selectedBed = bedId;
+            renderMattresses();
+        }
+
+        // Render Stars
+        function renderStars(rating) {
+            let html = '';
+            for (let i = 0; i < 5; i++) {
+                html += `<svg class="star ${i < Math.floor(rating) ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>`;
+            }
+            return html;
+        }
+
+        // Render Mattresses
+        function renderMattresses() {
+            const container = document.getElementById('mattress-list');
+            container.innerHTML = '';
+
+            mattressModels.forEach(mattress => {
+                const price = calculatePrice(mattress);
+                const isSelected = selectedBed === mattress.id;
+                const isFavorited = favorites.has(mattress.id);
+
+                const card = document.createElement('div');
+                card.className = `mattress-card ${isSelected ? 'selected' : ''}`;
+                card.onclick = () => selectBed(mattress.id);
+
+                card.innerHTML = `
+                    <div class="mattress-content">
+                        <div class="mattress-image">
+                            <img src="${mattress.image}" alt="${mattress.name}">
+                        </div>
+                        <div class="mattress-details">
+                            <div class="mattress-header">
+                                <div>
+                                    <div class="mattress-name">${mattress.name}</div>
+                                    <div class="mattress-category">${mattress.category}</div>
+                                </div>
+                                <button class="heart-btn" onclick="event.stopPropagation(); toggleFavorite('${mattress.id}')">
+                                    <svg class="heart-icon ${isFavorited ? 'favorited' : ''}" viewBox="0 0 24 24">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mattress-price">${formatPrice(price)}</div>
+                            <div class="stars">${renderStars(mattress.rating)}</div>
+                            <div class="mattress-description">${mattress.description}</div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Update Prices and Info Box
+        function updatePrices() {
+            const thickness = document.getElementById('thickness').value;
+            const width = document.getElementById('width').value;
+            const length = document.getElementById('length').value;
+            const infoBox = document.getElementById('info-box');
+
+            if (thickness && width && length) {
+                infoBox.classList.remove('hidden');
+                const unitName = currentUnit === 'IN' ? 'inches' : currentUnit === 'CM' ? 'cm' : 'feet';
+                document.getElementById('dimensions-display').textContent = 
+                    `${thickness}" × ${width}" × ${length}" ${unitName}`;
+                
+                if (currentUnit !== 'IN') {
+                    const t = convertToInches(thickness, currentUnit).toFixed(1);
+                    const w = convertToInches(width, currentUnit).toFixed(1);
+                    const l = convertToInches(length, currentUnit).toFixed(1);
+                    document.getElementById('conversion-display').textContent = 
+                        `≈ ${t}" × ${w}" × ${l}" inches`;
+                } else {
+                    document.getElementById('conversion-display').textContent = '';
+                }
+            } else {
+                infoBox.classList.add('hidden');
+            }
+
+            renderMattresses();
+        }
+
+        // Show Final Price
+        function showFinalPrice() {
+            const thickness = document.getElementById('thickness').value;
+            const width = document.getElementById('width').value;
+            const length = document.getElementById('length').value;
+
+            if (!selectedBed || !thickness || !width || !length) {
+                alert('Please fill all dimensions and select a mattress type');
+                return;
+            }
+
+            const mattress = mattressModels.find(m => m.id === selectedBed);
+            const finalPrice = calculatePrice(mattress);
+            const t = convertToInches(parseFloat(thickness), currentUnit);
+            const w = convertToInches(parseFloat(width), currentUnit);
+            const l = convertToInches(parseFloat(length), currentUnit);
+
+            const message = `${mattress.name}\n\nDimensions: ${thickness} × ${width} × ${length} ${currentUnit}\n(${t.toFixed(1)}" × ${w.toFixed(1)}" × ${l.toFixed(1)}" inches)\n\nArea: ${(w * l / 144).toFixed(2)} sq ft\n\nTotal Price: ${formatPrice(finalPrice)}\n\nBase Price (${t <= 6 ? '6"' : '8"'}): ${formatPrice(t <= 6 ? mattress.basePrice6 : mattress.basePrice8)}\nPrice per sq inch: ₹${mattress.pricePerSqIn.toFixed(3)}`;
+
+            alert(message);
+        }
+
+        // Initialize
+        renderMattresses();
+    </script>
+</body>
+</html>
