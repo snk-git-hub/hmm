@@ -323,15 +323,15 @@
             <!-- Input Fields -->
             <div class="input-group">
                 <label id="thickness-label">Thickness (IN)</label>
-                <input type="number" id="thickness" placeholder="Enter thickness in IN" step="0.1" oninput="updatePrices()">
-            </div>
-            <div class="input-group">
-                <label id="width-label">Width (IN)</label>
-                <input type="number" id="width" placeholder="Enter width in IN" step="0.1" oninput="updatePrices()">
+                <input type="number" id="thickness" placeholder="Enter thickness" step="0.1" oninput="updatePrices()">
             </div>
             <div class="input-group">
                 <label id="length-label">Length (IN)</label>
-                <input type="number" id="length" placeholder="Enter length in IN" step="0.1" oninput="updatePrices()">
+                <input type="number" id="length" placeholder="Enter length" step="0.1" oninput="updatePrices()">
+            </div>
+            <div class="input-group">
+                <label id="width-label">Width (IN)</label>
+                <input type="number" id="width" placeholder="Enter width" step="0.1" oninput="updatePrices()">
             </div>
 
             <!-- Info Box -->
@@ -439,22 +439,22 @@
         // Calculate Price
         function calculatePrice(mattress) {
             const thickness = document.getElementById('thickness').value;
-            const width = document.getElementById('width').value;
             const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
 
-            if (!thickness || !width || !length) return null;
+            if (!thickness || !length || !width) return null;
 
             const t = parseFloat(thickness);
-            const w = parseFloat(width);
             const l = parseFloat(length);
+            const w = parseFloat(width);
 
-            if (isNaN(t) || isNaN(w) || isNaN(l) || t <= 0 || w <= 0 || l <= 0) return null;
+            if (isNaN(t) || isNaN(l) || isNaN(w) || t <= 0 || l <= 0 || w <= 0) return null;
 
             const thicknessInches = convertToInches(t, currentUnit);
-            const widthInches = convertToInches(w, currentUnit);
             const lengthInches = convertToInches(l, currentUnit);
+            const widthInches = convertToInches(w, currentUnit);
 
-            const area = widthInches * lengthInches;
+            const area = lengthInches * widthInches;
             const baseArea = mattress.baseSize.length * mattress.baseSize.width;
 
             let basePrice;
@@ -491,12 +491,12 @@
             });
             
             document.getElementById('thickness-label').textContent = `Thickness (${unit})`;
-            document.getElementById('width-label').textContent = `Width (${unit})`;
             document.getElementById('length-label').textContent = `Length (${unit})`;
+            document.getElementById('width-label').textContent = `Width (${unit})`;
             
-            document.getElementById('thickness').placeholder = `Enter thickness in ${unit}`;
-            document.getElementById('width').placeholder = `Enter width in ${unit}`;
-            document.getElementById('length').placeholder = `Enter length in ${unit}`;
+            document.getElementById('thickness').placeholder = `Enter thickness`;
+            document.getElementById('length').placeholder = `Enter length`;
+            document.getElementById('width').placeholder = `Enter width`;
             
             updatePrices();
         }
@@ -573,22 +573,22 @@
         // Update Prices and Info Box
         function updatePrices() {
             const thickness = document.getElementById('thickness').value;
-            const width = document.getElementById('width').value;
             const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
             const infoBox = document.getElementById('info-box');
 
-            if (thickness && width && length) {
+            if (thickness && length && width) {
                 infoBox.classList.remove('hidden');
                 const unitName = currentUnit === 'IN' ? 'inches' : currentUnit === 'CM' ? 'cm' : 'feet';
                 document.getElementById('dimensions-display').textContent = 
-                    `${thickness}" × ${width}" × ${length}" ${unitName}`;
+                    `${thickness}" T × ${length}" L × ${width}" W (${unitName})`;
                 
                 if (currentUnit !== 'IN') {
                     const t = convertToInches(thickness, currentUnit).toFixed(1);
-                    const w = convertToInches(width, currentUnit).toFixed(1);
                     const l = convertToInches(length, currentUnit).toFixed(1);
+                    const w = convertToInches(width, currentUnit).toFixed(1);
                     document.getElementById('conversion-display').textContent = 
-                        `≈ ${t}" × ${w}" × ${l}" inches`;
+                        `≈ ${t}" T × ${l}" L × ${w}" W (inches)`;
                 } else {
                     document.getElementById('conversion-display').textContent = '';
                 }
@@ -602,10 +602,10 @@
         // Show Final Price
         function showFinalPrice() {
             const thickness = document.getElementById('thickness').value;
-            const width = document.getElementById('width').value;
             const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
 
-            if (!selectedBed || !thickness || !width || !length) {
+            if (!selectedBed || !thickness || !length || !width) {
                 alert('Please fill all dimensions and select a mattress type');
                 return;
             }
@@ -613,10 +613,10 @@
             const mattress = mattressModels.find(m => m.id === selectedBed);
             const finalPrice = calculatePrice(mattress);
             const t = convertToInches(parseFloat(thickness), currentUnit);
-            const w = convertToInches(parseFloat(width), currentUnit);
             const l = convertToInches(parseFloat(length), currentUnit);
+            const w = convertToInches(parseFloat(width), currentUnit);
 
-            const message = `${mattress.name}\n\nDimensions: ${thickness} × ${width} × ${length} ${currentUnit}\n(${t.toFixed(1)}" × ${w.toFixed(1)}" × ${l.toFixed(1)}" inches)\n\nArea: ${(w * l / 144).toFixed(2)} sq ft\n\nTotal Price: ${formatPrice(finalPrice)}\n\nBase Price (${t <= 6 ? '6"' : '8"'}): ${formatPrice(t <= 6 ? mattress.basePrice6 : mattress.basePrice8)}\nPrice per sq inch: ₹${mattress.pricePerSqIn.toFixed(3)}`;
+            const message = `${mattress.name}\n\nDimensions: ${thickness}" T × ${length}" L × ${width}" W ${currentUnit}\n(${t.toFixed(1)}" T × ${l.toFixed(1)}" L × ${w.toFixed(1)}" W inches)\n\nArea: ${(l * w / 144).toFixed(2)} sq ft\n\nTotal Price: ${formatPrice(finalPrice)}\n\nBase Price (${t <= 6 ? '6"' : '8"'}): ${formatPrice(t <= 6 ? mattress.basePrice6 : mattress.basePrice8)}\nPrice per sq inch: ₹${mattress.pricePerSqIn.toFixed(3)}`;
 
             alert(message);
         }
