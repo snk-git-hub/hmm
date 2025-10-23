@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sherlon Sleepcare - Price Calculator</title>
+    <title>BED SPOT - Price Calculator</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: linear-gradient(to bottom right, #faf5ff, #fce7f3);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(to bottom right, #faf5ff, #ffffff, #f0f9ff);
             min-height: 100vh;
             padding: 1rem;
         }
@@ -23,33 +23,25 @@
             margin: 0 auto;
             background: white;
             border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(to right, #9333ea, #4f46e5);
+            background: linear-gradient(to right, #7c3aed, #2563eb);
             padding: 1.5rem;
             color: white;
-            text-align: center;
         }
 
         .header h1 {
             font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
-        .header .subtitle {
-            color: #e9d5ff;
+        .header p {
             font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .header .year {
-            color: #ddd6fe;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
+            opacity: 0.9;
         }
 
         .content {
@@ -59,570 +51,640 @@
         .unit-buttons {
             display: flex;
             gap: 0.5rem;
-            justify-content: center;
             margin-bottom: 1.5rem;
         }
 
         .unit-btn {
             flex: 1;
             padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
             border: none;
+            border-radius: 0.75rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            background-color: #f3f4f6;
+            color: #4b5563;
         }
 
         .unit-btn.active {
-            background: linear-gradient(to right, #9333ea, #4f46e5);
+            background-color: #7c3aed;
             color: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
         }
 
-        .unit-btn:not(.active) {
-            background: #f3e8ff;
-            color: #9333ea;
-        }
-
-        .unit-btn:not(.active):hover {
-            background: #e9d5ff;
-        }
-
-        .input-group {
+        .form-group {
             margin-bottom: 1rem;
         }
 
-        .input-group label {
+        label {
             display: block;
             font-size: 0.875rem;
             color: #4b5563;
-            margin-left: 0.5rem;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
 
-        .input-group input {
+        select {
             width: 100%;
             padding: 1rem;
-            border-radius: 0.75rem;
-            background: #f3e8ff;
-            border: 2px solid #e9d5ff;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #9333ea;
-        }
-
-        .info-box {
-            background: #eff6ff;
-            border: 2px solid #bfdbfe;
-            border-radius: 0.75rem;
-            padding: 0.75rem;
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .info-box .icon {
-            color: #2563eb;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-
-        .info-box .text {
-            font-size: 0.875rem;
-            color: #1e40af;
-        }
-
-        .info-box .text strong {
-            font-weight: 600;
-        }
-
-        .info-box .conversion {
-            font-size: 0.75rem;
-            color: #2563eb;
-            margin-top: 0.25rem;
-        }
-
-        .mattress-list {
-            max-height: 24rem;
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-        }
-
-        .mattress-card {
-            padding: 1rem;
-            border-radius: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 0.75rem;
-            background: #f3e8ff;
+            background-color: #faf5ff;
             border: 2px solid transparent;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
         }
 
-        .mattress-card:hover {
-            background: #e9d5ff;
+        select:focus {
+            outline: none;
+            border-color: #a78bfa;
         }
 
-        .mattress-card.selected {
-            background: linear-gradient(to right, #f3e8ff, #fce7f3);
-            border-color: #c084fc;
+        .results-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .result-card {
+            border-radius: 1.125rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px solid;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .result-card.showroom-emerald {
+            background: linear-gradient(to right, #d1fae5, #ecfdf5);
+            border-color: #a7f3d0;
+        }
+
+        .result-card.showroom-blue {
+            background: linear-gradient(to right, #dbeafe, #f0f9ff);
+            border-color: #93c5fd;
+        }
+
+        .result-card.showroom-pink {
+            background: linear-gradient(to right, #fce7f3, #fdf2f8);
+            border-color: #fbcfe8;
+        }
+
+        .result-card.showroom-amber {
+            background: linear-gradient(to right, #fef3c7, #fffbeb);
+            border-color: #fcd34d;
+        }
+
+        .result-card.showroom-violet {
+            background: linear-gradient(to right, #ede9fe, #faf5ff);
+            border-color: #ddd6fe;
+        }
+
+        .result-card.showroom-cyan {
+            background: linear-gradient(to right, #cffafe, #ecf8ff);
+            border-color: #a5f3fc;
+        }
+
+        .result-card.default {
+            background: linear-gradient(to right, #f3e8ff, #f0f9ff);
+            border-color: #e5e7eb;
+        }
+
+        .showroom-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: linear-gradient(to right, #f97316, #dc2626);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .mattress-content {
+        .result-content {
             display: flex;
             gap: 1rem;
         }
 
-        .mattress-image {
-            width: 5rem;
-            height: 5rem;
+        .bed-icon {
+            width: 4rem;
+            height: 4rem;
+            background: white;
             border-radius: 0.75rem;
-            overflow: hidden;
-            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.875rem;
             flex-shrink: 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .mattress-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .mattress-details {
+        .result-details {
             flex: 1;
         }
 
-        .mattress-header {
+        .result-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            line-height: 1.25;
+            padding-right: 5rem;
+        }
+
+        .price-row {
             display: flex;
             justify-content: space-between;
-            align-items: start;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .price-label {
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .offer-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
             margin-bottom: 0.5rem;
         }
 
-        .mattress-name {
-            font-weight: bold;
-            font-size: 1rem;
-            color: #1f2937;
+        .offer-label {
+            font-size: 0.875rem;
+            color: #6d28d9;
+            font-weight: 600;
         }
 
-        .mattress-category {
-            font-size: 0.75rem;
-            color: #4b5563;
-        }
-
-        .heart-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: transform 0.2s;
-        }
-
-        .heart-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .heart-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            fill: none;
-            stroke: #9ca3af;
-            stroke-width: 2;
-        }
-
-        .heart-icon.favorited {
-            fill: #ef4444;
-            stroke: #ef4444;
-        }
-
-        .mattress-price {
-            font-size: 1.125rem;
-            font-weight: bold;
+        .offer-price {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: #9333ea;
-            margin: 0.5rem 0;
         }
 
-        .stars {
-            display: flex;
-            gap: 0.25rem;
-            margin: 0.5rem 0;
-        }
-
-        .star {
-            width: 0.75rem;
-            height: 0.75rem;
-        }
-
-        .star.filled {
-            fill: #fbbf24;
-            stroke: #fbbf24;
-        }
-
-        .star.empty {
-            fill: none;
-            stroke: #d1d5db;
-        }
-
-        .mattress-description {
-            font-size: 0.75rem;
-            color: #6b7280;
-            margin-top: 0.5rem;
-        }
-
-        .calculate-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(to right, #9333ea, #4f46e5);
+        .save-badge {
+            display: inline-block;
+            background-color: #22c55e;
             color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-
-        .calculate-btn:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            transform: scale(1.05);
-        }
-
-        .footer {
-            text-align: center;
             font-size: 0.75rem;
-            color: #6b7280;
-            padding-top: 0.5rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
         }
 
-        .hidden {
-            display: none;
+        .no-results {
+            background-color: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            color: #b45309;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>SHERLON SLEEPCARE</h1>
-            <p class="subtitle">Dynamic Price Calculator</p>
-            <p class="year">Since 2001 | Price List 2025-26</p>
+            <h1>BED SPOT</h1>
+            <p>Price Calculator</p>
         </div>
 
         <div class="content">
-            <!-- Unit Selection -->
             <div class="unit-buttons">
-                <button class="unit-btn active" data-unit="IN" onclick="selectUnit('IN')">✓ IN</button>
-                <button class="unit-btn" data-unit="CM" onclick="selectUnit('CM')">✓ CM</button>
-                <button class="unit-btn" data-unit="FT" onclick="selectUnit('FT')">✓ FT</button>
+                <button class="unit-btn active" data-unit="IN">IN</button>
+                <button class="unit-btn" data-unit="CM">CM</button>
+                <button class="unit-btn" data-unit="FT">FT</button>
             </div>
 
-            <!-- Input Fields -->
-            <div class="input-group">
-                <label id="thickness-label">Thickness (IN)</label>
-                <input type="number" id="thickness" placeholder="Enter thickness" step="0.1" oninput="updatePrices()">
-            </div>
-            <div class="input-group">
-                <label id="length-label">Width (IN)</label>
-                <input type="number" id="length" placeholder="Enter Width step="0.1" oninput="updatePrices()">
-            </div>
-            <div class="input-group">
-                <label id="width-label">Lenght (IN)</label>
-                <input type="number" id="width" placeholder="Enter Lenght " step="0.1" oninput="updatePrices()">
+            <div class="form-group">
+                <label>Bed Length (<span class="unit-display">IN</span>)</label>
+                <select id="length">
+                    <option value="">Select length</option>
+                    <option value="72">72 inches</option>
+                    <option value="75">75 inches</option>
+                    <option value="78">78 inches</option>
+                </select>
             </div>
 
-            <!-- Info Box -->
-            <div id="info-box" class="info-box hidden">
-                <div class="icon">ℹ️</div>
-                <div class="text">
-                    <strong>Calculating for:</strong>
-                    <p id="dimensions-display"></p>
-                    <p id="conversion-display" class="conversion"></p>
-                </div>
+            <div class="form-group">
+                <label>Bed Width (<span class="unit-display">IN</span>)</label>
+                <select id="width">
+                    <option value="">Select width</option>
+                    <option value="30">30 inches</option>
+                    <option value="36">36 inches</option>
+                    <option value="42">42 inches</option>
+                    <option value="48">48 inches</option>
+                    <option value="60">60 inches</option>
+                    <option value="72">72 inches</option>
+                </select>
             </div>
 
-            <!-- Mattress List -->
-            <div class="mattress-list" id="mattress-list"></div>
-
-            <!-- Calculate Button -->
-            <button class="calculate-btn" onclick="showFinalPrice()">Calculate Final Price</button>
-
-            <div class="footer">
-                <p>Century Fibre Foams | Kannur, Kerala</p>
-                <p>www.sherlon.in</p>
+            <div class="form-group">
+                <label>Bed Thickness (inches)</label>
+                <select id="thickness">
+                    <option value="">Select thickness</option>
+                    <option value="4">4"</option>
+                    <option value="5">5"</option>
+                    <option value="6">6"</option>
+                    <option value="6+2">6+2"</option>
+                    <option value="8">8"</option>
+                </select>
             </div>
+
+            <div id="results-container" class="results-container"></div>
+            <div id="no-results" class="no-results" style="display: none;"></div>
         </div>
     </div>
 
     <script>
-        // State
+        const mattresses = {
+            'SAYANORA LATEX ORTHO': {
+                sizes: {
+                    '72x30': { '6': 14499, '8': 16499 },
+                    '72x36': { '6': 17299, '8': 19999 },
+                    '72x42': { '6': 20299, '8': 23099 },
+                    '72x48': { '6': 24099, '8': 26499 },
+                    '72x60': { '6': 28499, '8': 32999 },
+                    '72x72': { '6': 33999, '8': 39099 },
+                    '75x30': { '6': 15299, '8': 17099 },
+                    '75x36': { '6': 17999, '8': 19999 },
+                    '75x42': { '6': 21099, '8': 24399 },
+                    '75x48': { '6': 24499, '8': 27499 },
+                    '75x60': { '6': 29999, '8': 34499 },
+                    '75x72': { '6': 35499, '8': 41299 },
+                    '78x30': { '6': 15999, '8': 17999 },
+                    '78x36': { '6': 18799, '8': 21799 },
+                    '78x42': { '6': 21999, '8': 25299 },
+                    '78x48': { '6': 25099, '8': 28699 },
+                    '78x60': { '6': 31499, '8': 35899 },
+                    '78x72': { '6': 36999, '8': 42999 }
+                }
+            },
+            'SYMPHONY MEMORY ORTHO': {
+                sizes: {
+                    '72x30': { '6': 11279, '8': 14699 },
+                    '72x36': { '6': 13599, '8': 17599 },
+                    '72x42': { '6': 15799, '8': 20499 },
+                    '72x48': { '6': 17999, '8': 23399 },
+                    '72x60': { '6': 22459, '8': 25999 },
+                    '72x72': { '6': 26499, '8': 29999 },
+                    '75x30': { '6': 11749, '8': 15299 },
+                    '75x36': { '6': 14299, '8': 18399 },
+                    '75x42': { '6': 16599, '8': 21399 },
+                    '75x48': { '6': 18999, '8': 24499 },
+                    '75x60': { '6': 23499, '8': 26999 },
+                    '75x72': { '6': 27699, '8': 31099 },
+                    '78x30': { '6': 12299, '8': 15999 },
+                    '78x36': { '6': 14699, '8': 19299 },
+                    '78x42': { '6': 17299, '8': 22499 },
+                    '78x48': { '6': 19499, '8': 25499 },
+                    '78x60': { '6': 24499, '8': 28999 },
+                    '78x72': { '6': 29199, '8': 33399 }
+                }
+            },
+            'MEDI PLUS MEMORY ORTHO': {
+                sizes: {
+                    '72x30': { '6': 14799, '6+2': 17299 },
+                    '72x36': { '6': 15699, '6+2': 18199 },
+                    '72x42': { '6': 17999, '6+2': 20499 },
+                    '72x48': { '6': 19799, '6+2': 22299 },
+                    '72x60': { '6': 23499, '6+2': 26999 },
+                    '72x72': { '6': 25799, '6+2': 29799 },
+                    '75x30': { '6': 15199, '6+2': 17699 },
+                    '75x36': { '6': 16099, '6+2': 18599 },
+                    '75x42': { '6': 18399, '6+2': 20899 },
+                    '75x48': { '6': 20199, '6+2': 22699 },
+                    '75x60': { '6': 23899, '6+2': 27399 },
+                    '75x72': { '6': 26599, '6+2': 30599 },
+                    '78x30': { '6': 15599, '6+2': 18099 },
+                    '78x36': { '6': 16499, '6+2': 18999 },
+                    '78x42': { '6': 18799, '6+2': 21299 },
+                    '78x48': { '6': 20599, '6+2': 23099 },
+                    '78x60': { '6': 24699, '6+2': 28199 },
+                    '78x72': { '6': 27599, '6+2': 31599 }
+                }
+            },
+            'MEDI PLUS ORTHO': {
+                sizes: {
+                    '72x30': { '6': 10299, '8': 12999 },
+                    '72x36': { '6': 11199, '8': 14399 },
+                    '72x42': { '6': 13499, '8': 17199 },
+                    '72x48': { '6': 15299, '8': 19799 },
+                    '72x60': { '6': 18999, '8': 22499 },
+                    '72x72': { '6': 21299, '8': 25799 },
+                    '75x30': { '6': 10699, '8': 13699 },
+                    '75x36': { '6': 11599, '8': 15099 },
+                    '75x42': { '6': 13899, '8': 17899 },
+                    '75x48': { '6': 15699, '8': 20599 },
+                    '75x60': { '6': 19399, '8': 22999 },
+                    '75x72': { '6': 22099, '8': 25599 },
+                    '78x30': { '6': 11099, '8': 14599 },
+                    '78x36': { '6': 11999, '8': 15799 },
+                    '78x42': { '6': 14299, '8': 18599 },
+                    '78x48': { '6': 16099, '8': 21349 },
+                    '78x60': { '6': 20199, '8': 23899 },
+                    '78x72': { '6': 23099, '8': 27099 }
+                }
+            },
+            'GAALA EURO TOP ORTHO': {
+                sizes: {
+                    '72x30': { '6': 8999, '8': 10999 },
+                    '72x36': { '6': 9999, '8': 13399 },
+                    '72x42': { '6': 11999, '8': 15999 },
+                    '72x48': { '6': 13399, '8': 17999 },
+                    '72x60': { '6': 16799, '8': 22999 },
+                    '72x72': { '6': 20299, '8': 26999 },
+                    '75x30': { '6': 9699, '8': 11599 },
+                    '75x36': { '6': 10399, '8': 13999 },
+                    '75x42': { '6': 12599, '8': 16299 },
+                    '75x48': { '6': 13999, '8': 18699 },
+                    '75x60': { '6': 17499, '8': 23499 },
+                    '75x72': { '6': 20999, '8': 28299 },
+                    '78x30': { '6': 10099, '8': 12099 },
+                    '78x36': { '6': 11099, '8': 15499 },
+                    '78x42': { '6': 13099, '8': 16999 },
+                    '78x48': { '6': 14499, '8': 20999 },
+                    '78x60': { '6': 18299, '8': 24499 },
+                    '78x72': { '6': 21999, '8': 28999 }
+                }
+            },
+            'SONET MEMORY FOAM': {
+                sizes: {
+                    '72x30': { '6': 11499, '8': 13499 },
+                    '72x36': { '6': 12999, '8': 15299 },
+                    '72x42': { '6': 14499, '8': 16999 },
+                    '72x48': { '6': 15499, '8': 18199 },
+                    '72x60': { '6': 17499, '8': 19999 },
+                    '72x72': { '6': 20999, '8': 23999 },
+                    '75x30': { '6': 11999, '8': 13999 },
+                    '75x36': { '6': 13499, '8': 16199 },
+                    '75x42': { '6': 14999, '8': 17699 },
+                    '75x48': { '6': 15999, '8': 18999 },
+                    '75x60': { '6': 19999, '8': 22499 },
+                    '75x72': { '6': 22499, '8': 25499 },
+                    '78x30': { '6': 12499, '8': 14499 },
+                    '78x36': { '6': 13999, '8': 16699 },
+                    '78x42': { '6': 15499, '8': 18199 },
+                    '78x48': { '6': 16499, '8': 19499 },
+                    '78x60': { '6': 20499, '8': 22999 },
+                    '78x72': { '6': 23499, '8': 26499 }
+                }
+            },
+            'SONET PLUS FOAM': {
+                sizes: {
+                    '72x30': { '6': 10499, '8': 12199 },
+                    '72x36': { '6': 11999, '8': 13999 },
+                    '72x42': { '6': 13499, '8': 15799 },
+                    '72x48': { '6': 14499, '8': 16999 },
+                    '72x60': { '6': 16199, '8': 18799 },
+                    '72x72': { '6': 19499, '8': 22199 },
+                    '75x30': { '6': 10999, '8': 12799 },
+                    '75x36': { '6': 12499, '8': 14799 },
+                    '75x42': { '6': 13999, '8': 16299 },
+                    '75x48': { '6': 14999, '8': 17499 },
+                    '75x60': { '6': 16499, '8': 18999 },
+                    '75x72': { '6': 19999, '8': 22999 },
+                    '78x30': { '6': 11499, '8': 13499 },
+                    '78x36': { '6': 12999, '8': 15199 },
+                    '78x42': { '6': 14499, '8': 16699 },
+                    '78x48': { '6': 15499, '8': 17999 },
+                    '78x60': { '6': 16999, '8': 19499 },
+                    '78x72': { '6': 20499, '8': 23499 }
+                }
+            },
+            'SONET HR FOAM': {
+                sizes: {
+                    '72x30': { '6': 6999, '8': 8199 },
+                    '72x36': { '6': 7799, '8': 9999 },
+                    '72x42': { '6': 8999, '8': 10999 },
+                    '72x48': { '6': 10599, '8': 12599 },
+                    '72x60': { '6': 12999, '8': 15699 },
+                    '72x72': { '6': 15799, '8': 18899 },
+                    '75x30': { '6': 7499, '8': 8699 },
+                    '75x36': { '6': 8299, '8': 10699 },
+                    '75x42': { '6': 9499, '8': 11599 },
+                    '75x48': { '6': 11999, '8': 13199 },
+                    '75x60': { '6': 13499, '8': 16299 },
+                    '75x72': { '6': 16399, '8': 19499 },
+                    '78x30': { '6': 7999, '8': 9249 },
+                    '78x36': { '6': 8899, '8': 11249 },
+                    '78x42': { '6': 10199, '8': 12149 },
+                    '78x48': { '6': 11799, '8': 13799 },
+                    '78x60': { '6': 14199, '8': 16999 },
+                    '78x72': { '6': 17149, '8': 20249 }
+                }
+            },
+            'ECO ZAIN BONNEL SPRING': {
+                sizes: {
+                    '72x30': { '6': 7749, '8': 9299 },
+                    '72x36': { '6': 9299, '8': 11149 },
+                    '72x42': { '6': 10849, '8': 12999 },
+                    '72x48': { '6': 12399, '8': 14849 },
+                    '72x60': { '6': 14999, '8': 18599 },
+                    '72x72': { '6': 18599, '8': 22299 },
+                    '75x30': { '6': 8099, '8': 9749 },
+                    '75x36': { '6': 9699, '8': 11599 },
+                    '75x42': { '6': 11299, '8': 13499 },
+                    '75x48': { '6': 12899, '8': 15399 },
+                    '75x60': { '6': 15499, '8': 18999 },
+                    '75x72': { '6': 18599, '8': 22799 },
+                    '78x30': { '6': 8449, '8': 10249 },
+                    '78x36': { '6': 10099, '8': 12049 },
+                    '78x42': { '6': 11749, '8': 13849 },
+                    '78x48': { '6': 13399, '8': 15999 },
+                    '78x60': { '6': 15999, '8': 19499 },
+                    '78x72': { '6': 18599, '8': 22799 }
+                }
+            },
+            'SHORTHO MAX ORTHO': {
+                sizes: {
+                    '72x30': { '5': 9499 },
+                    '72x36': { '5': 10999 },
+                    '72x42': { '5': 12299 },
+                    '72x48': { '5': 12999 },
+                    '72x60': { '5': 14999 },
+                    '72x72': { '5': 17299 },
+                    '75x30': { '5': 9999 },
+                    '75x36': { '5': 11499 },
+                    '75x42': { '5': 12799 },
+                    '75x48': { '5': 13499 },
+                    '75x60': { '5': 15999 },
+                    '75x72': { '5': 18299 },
+                    '78x30': { '5': 10499 },
+                    '78x36': { '5': 11999 },
+                    '78x42': { '5': 13299 },
+                    '78x48': { '5': 13999 },
+                    '78x60': { '5': 16299 },
+                    '78x72': { '5': 18799 }
+                }
+            },
+            'SANAM EURO TOP COIR': {
+                sizes: {
+                    '72x30': { '6': 7299, '8': 9999 },
+                    '72x36': { '6': 8499, '8': 11499 },
+                    '72x42': { '6': 9799, '8': 12799 },
+                    '72x48': { '6': 10999, '8': 13999 },
+                    '72x60': { '6': 13499, '8': 15999 },
+                    '72x72': { '6': 15999, '8': 18499 },
+                    '75x30': { '6': 7499, '8': 10499 },
+                    '75x36': { '6': 8999, '8': 11999 },
+                    '75x42': { '6': 9999, '8': 12999 },
+                    '75x48': { '6': 11299, '8': 14299 },
+                    '75x60': { '6': 14499, '8': 16999 },
+                    '75x72': { '6': 16999, '8': 19999 },
+                    '78x30': { '6': 8499, '8': 11499 },
+                    '78x36': { '6': 9599, '8': 12499 },
+                    '78x42': { '6': 10999, '8': 13999 },
+                    '78x48': { '6': 12299, '8': 15299 },
+                    '78x60': { '6': 14999, '8': 17999 },
+                    '78x72': { '6': 17499, '8': 20499 }
+                }
+            },
+            'SANAM COIR': {
+                sizes: {
+                    '72x30': { '4': 7199, '5': 8199 },
+                    '72x36': { '4': 8599, '5': 9799 },
+                    '72x42': { '4': 9999, '5': 11399 },
+                    '72x48': { '4': 10799, '5': 12299 },
+                    '72x60': { '4': 11499, '5': 12999 },
+                    '72x72': { '4': 13799, '5': 15499 },
+                    '75x30': { '4': 7499, '5': 8499 },
+                    '75x36': { '4': 8899, '5': 10199 },
+                    '75x42': { '4': 10299, '5': 11899 },
+                    '75x48': { '4': 10899, '5': 12599 },
+                    '75x60': { '4': 11999, '5': 13799 },
+                    '75x72': { '4': 14399, '5': 16099 },
+                    '78x30': { '4': 7799, '5': 8899 },
+                    '78x36': { '4': 9199, '5': 10599 },
+                    '78x42': { '4': 10699, '5': 12299 },
+                    '78x48': { '4': 11599, '5': 13299 },
+                    '78x60': { '4': 12499, '5': 14299 },
+                    '78x72': { '4': 14999, '5': 16799 }
+                }
+            }
+        };
+
+        const showroomBeds = ['ECO ZAIN BONNEL SPRING', 'MEDI PLUS MEMORY ORTHO', 'SONET MEMORY FOAM', 'GAALA EURO TOP ORTHO', 'SONET PLUS FOAM', 'ZARA MEMORY POCKETED SPRING'];
+
+        const showroomColors = {
+            'ECO ZAIN BONNEL SPRING': 'showroom-emerald',
+            'MEDI PLUS MEMORY ORTHO': 'showroom-blue',
+            'SONET MEMORY FOAM': 'showroom-pink',
+            'GAALA EURO TOP ORTHO': 'showroom-amber',
+            'SONET PLUS FOAM': 'showroom-violet',
+            'ZARA MEMORY POCKETED SPRING': 'showroom-cyan'
+        };
+
         let currentUnit = 'IN';
-        let selectedBed = null;
-        let favorites = new Set();
 
-        // Mattress Data
-        const mattressModels = [
-            {
-                id: 'mediplus-memory',
-                name: 'MEDI PLUS MEMORY ORTHO',
-                category: 'Memory Foam Premium',
-                description: 'Memory Quilted Fabric with SuperSoft Foam',
-                rating: 5,
-                image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200&h=200&fit=crop',
-                basePrice6: 14799,
-                basePrice8: 17299,
-                baseSize: { length: 72, width: 30 },
-                pricePerSqIn: 1.16
-            },
-            {
-                id: 'sonet-memory',
-                name: 'SONET MEMORY FOAM',
-                category: 'Memory Foam',
-                description: 'Cooling Gel Memory Foam with High Density HR',
-                rating: 4.5,
-                image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=200&h=200&fit=crop',
-                basePrice6: 10999,
-                basePrice8: 13499,
-                baseSize: { length: 72, width: 30 },
-                pricePerSqIn: 1.16
-            },
-            {
-                id: 'gaala',
-                name: 'GAALA EURO TOP ORTHO',
-                category: 'Euro Top',
-                description: 'SuperSoft Foam with Orthopedic Rebonded Support',
-                rating: 4.5,
-                image: 'https://images.unsplash.com/photo-1615529182904-14b682f3f0b7?w=200&h=200&fit=crop',
-                basePrice6: 8999,
-                basePrice8: 10999,
-                baseSize: { length: 72, width: 30 },
-                pricePerSqIn: 0.93
-            },
-            {
-                id: 'sonet-plus-memory',
-                name: 'SONET PLUS MEMORY FOAM',
-                category: 'Memory Foam',
-                description: 'High Density HR Foam with Memory Quilted Fabric',
-                rating: 4.5,
-                image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=200&fit=crop',
-                basePrice6: 11499,
-                basePrice8: 13499,
-                baseSize: { length: 72, width: 30 },
-                pricePerSqIn: 0.93
-            },
-            {
-                id: 'zara-memory',
-                name: 'ZARA MEMORY POCKETED SPRING',
-                category: 'Premium Spring',
-                description: 'Memory Quilted with Pocketed Spring Unit',
-                rating: 5,
-                image: 'https://images.unsplash.com/photo-1616594039960-c9053d3c0b1c?w=200&h=200&fit=crop',
-                basePrice6: 12999,
-                basePrice8: 16499,
-                baseSize: { length: 72, width: 30 },
-                pricePerSqIn: 1.62
-            }
-        ];
+        const unitButtons = document.querySelectorAll('.unit-btn');
+        const lengthSelect = document.getElementById('length');
+        const widthSelect = document.getElementById('width');
+        const thicknessSelect = document.getElementById('thickness');
+        const resultsContainer = document.getElementById('results-container');
+        const noResultsDiv = document.getElementById('no-results');
+        const unitDisplays = document.querySelectorAll('.unit-display');
 
-        // Conversion Functions
-        function convertToInches(value, fromUnit) {
-            const num = parseFloat(value);
-            if (isNaN(num)) return 0;
-            if (fromUnit === 'CM') return num / 2.54;
-            if (fromUnit === 'FT') return num * 12;
-            return num;
-        }
-
-        // Calculate Price
-        function calculatePrice(mattress) {
-            const thickness = document.getElementById('thickness').value;
-            const length = document.getElementById('length').value;
-            const width = document.getElementById('width').value;
-
-            if (!thickness || !length || !width) return null;
-
-            const t = parseFloat(thickness);
-            const l = parseFloat(length);
-            const w = parseFloat(width);
-
-            if (isNaN(t) || isNaN(l) || isNaN(w) || t <= 0 || l <= 0 || w <= 0) return null;
-
-            const thicknessInches = convertToInches(t, currentUnit);
-            const lengthInches = convertToInches(l, currentUnit);
-            const widthInches = convertToInches(w, currentUnit);
-
-            const area = lengthInches * widthInches;
-            const baseArea = mattress.baseSize.length * mattress.baseSize.width;
-
-            let basePrice;
-            if (thicknessInches <= 6) {
-                basePrice = mattress.basePrice6;
-            } else if (thicknessInches <= 7) {
-                const ratio = (thicknessInches - 6) / 2;
-                basePrice = mattress.basePrice6 + (mattress.basePrice8 - mattress.basePrice6) * ratio;
-            } else {
-                basePrice = mattress.basePrice8;
-                if (thicknessInches > 8) {
-                    const extraThickness = thicknessInches - 8;
-                    basePrice += extraThickness * (mattress.basePrice8 - mattress.basePrice6) * 0.5;
-                }
-            }
-
-            const areaDiff = area - baseArea;
-            const price = basePrice + (areaDiff * mattress.pricePerSqIn);
-
-            return Math.round(price);
-        }
-
-        // Format Price
-        function formatPrice(price) {
-            if (!price) return '₹ --';
-            return `₹ ${price.toLocaleString('en-IN')}`;
-        }
-
-        // Select Unit
-        function selectUnit(unit) {
-            currentUnit = unit;
-            document.querySelectorAll('.unit-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.unit === unit);
+        unitButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                unitButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentUnit = btn.dataset.unit;
+                updateUnitLabels();
+                performSearch();
             });
-            
-            document.getElementById('thickness-label').textContent = `Thickness (${unit})`;
-            document.getElementById('length-label').textContent = `Length (${unit})`;
-            document.getElementById('width-label').textContent = `Width (${unit})`;
-            
-            document.getElementById('thickness').placeholder = `Enter thickness`;
-            document.getElementById('length').placeholder = `Enter length`;
-            document.getElementById('width').placeholder = `Enter width`;
-            
-            updatePrices();
+        });
+
+        lengthSelect.addEventListener('change', performSearch);
+        widthSelect.addEventListener('change', performSearch);
+        thicknessSelect.addEventListener('change', performSearch);
+
+        function updateUnitLabels() {
+            let unitLabel = 'IN';
+            if (currentUnit === 'CM') unitLabel = 'CM';
+            if (currentUnit === 'FT') unitLabel = 'FT';
+            unitDisplays.forEach(el => el.textContent = unitLabel);
         }
 
-        // Toggle Favorite
-        function toggleFavorite(bedId) {
-            if (favorites.has(bedId)) {
-                favorites.delete(bedId);
-            } else {
-                favorites.add(bedId);
-            }
-            renderMattresses();
-        }
+        function performSearch() {
+            let length = lengthSelect.value;
+            let width = widthSelect.value;
+            const thickness = thicknessSelect.value;
 
-        // Select Bed
-        function selectBed(bedId) {
-            selectedBed = bedId;
-            renderMattresses();
-        }
-
-        // Render Stars
-        function renderStars(rating) {
-            let html = '';
-            for (let i = 0; i < 5; i++) {
-                html += `<svg class="star ${i < Math.floor(rating) ? 'filled' : 'empty'}" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>`;
-            }
-            return html;
-        }
-
-        // Render Mattresses
-        function renderMattresses() {
-            const container = document.getElementById('mattress-list');
-            container.innerHTML = '';
-
-            mattressModels.forEach(mattress => {
-                const price = calculatePrice(mattress);
-                const isSelected = selectedBed === mattress.id;
-                const isFavorited = favorites.has(mattress.id);
-
-                const card = document.createElement('div');
-                card.className = `mattress-card ${isSelected ? 'selected' : ''}`;
-                card.onclick = () => selectBed(mattress.id);
-
-                card.innerHTML = `
-                    <div class="mattress-content">
-                        <div class="mattress-image">
-                            <img src="${mattress.image}" alt="${mattress.name}">
-                        </div>
-                        <div class="mattress-details">
-                            <div class="mattress-header">
-                                <div>
-                                    <div class="mattress-name">${mattress.name}</div>
-                                    <div class="mattress-category">${mattress.category}</div>
-                                </div>
-                                <button class="heart-btn" onclick="event.stopPropagation(); toggleFavorite('${mattress.id}')">
-                                    <svg class="heart-icon ${isFavorited ? 'favorited' : ''}" viewBox="0 0 24 24">
-                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="mattress-price">${formatPrice(price)}</div>
-                            <div class="stars">${renderStars(mattress.rating)}</div>
-                            <div class="mattress-description">${mattress.description}</div>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        // Update Prices and Info Box
-        function updatePrices() {
-            const thickness = document.getElementById('thickness').value;
-            const length = document.getElementById('length').value;
-            const width = document.getElementById('width').value;
-            const infoBox = document.getElementById('info-box');
-
-            if (thickness && length && width) {
-                infoBox.classList.remove('hidden');
-                const unitName = currentUnit === 'IN' ? 'inches' : currentUnit === 'CM' ? 'cm' : 'feet';
-                document.getElementById('dimensions-display').textContent = 
-                    `${thickness}" T × ${length}" L × ${width}" W (${unitName})`;
-                
-                if (currentUnit !== 'IN') {
-                    const t = convertToInches(thickness, currentUnit).toFixed(1);
-                    const l = convertToInches(length, currentUnit).toFixed(1);
-                    const w = convertToInches(width, currentUnit).toFixed(1);
-                    document.getElementById('conversion-display').textContent = 
-                        `≈ ${t}" T × ${l}" L × ${w}" W (inches)`;
-                } else {
-                    document.getElementById('conversion-display').textContent = '';
-                }
-            } else {
-                infoBox.classList.add('hidden');
-            }
-
-            renderMattresses();
-        }
-
-        // Show Final Price
-        function showFinalPrice() {
-            const thickness = document.getElementById('thickness').value;
-            const length = document.getElementById('length').value;
-            const width = document.getElementById('width').value;
-
-            if (!selectedBed || !thickness || !length || !width) {
-                alert('Please fill all dimensions and select a mattress type');
+            if (!length || !width || !thickness) {
+                resultsContainer.innerHTML = '';
+                noResultsDiv.style.display = 'none';
                 return;
             }
 
-            const mattress = mattressModels.find(m => m.id === selectedBed);
-            const finalPrice = calculatePrice(mattress);
-            const t = convertToInches(parseFloat(thickness), currentUnit);
-            const l = convertToInches(parseFloat(length), currentUnit);
-            const w = convertToInches(parseFloat(width), currentUnit);
+            // Convert to inches for searching
+            let searchLength = parseFloat(length);
+            let searchWidth = parseFloat(width);
 
-            const message = `${mattress.name}\n\nDimensions: ${thickness}" T × ${length}" L × ${width}" W ${currentUnit}\n(${t.toFixed(1)}" T × ${l.toFixed(1)}" L × ${w.toFixed(1)}" W inches)\n\nArea: ${(l * w / 144).toFixed(2)} sq ft\n\nTotal Price: ${formatPrice(finalPrice)}\n\nBase Price (${t <= 6 ? '6"' : '8"'}): ${formatPrice(t <= 6 ? mattress.basePrice6 : mattress.basePrice8)}\nPrice per sq inch: ₹${mattress.pricePerSqIn.toFixed(3)}`;
+            if (currentUnit === 'CM') {
+                searchLength = Math.round(searchLength / 2.54);
+                searchWidth = Math.round(searchWidth / 2.54);
+            } else if (currentUnit === 'FT') {
+                searchLength = Math.round(searchLength * 12);
+                searchWidth = Math.round(searchWidth * 12);
+            }
 
-            alert(message);
+            const sizeKey = `${searchLength}x${searchWidth}`;
+            const results = [];
+
+            Object.entries(mattresses).forEach(([name, data]) => {
+                if (data.sizes[sizeKey] && data.sizes[sizeKey][thickness]) {
+                    const price = data.sizes[sizeKey][thickness];
+                    const offerPrice = Math.round(price * 0.7);
+                    results.push({ name, price, offerPrice });
+                }
+            });
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '';
+                noResultsDiv.textContent = 'No mattresses found for this size';
+                noResultsDiv.style.display = 'block';
+            } else {
+                noResultsDiv.style.display = 'none';
+                resultsContainer.innerHTML = results.map((item, idx) => {
+                    const colorClass = showroomColors[item.name] || 'default';
+                    const isShowroom = showroomBeds.includes(item.name);
+                    const savingAmount = item.price - item.offerPrice;
+
+                    return `
+                        <div class="result-card ${colorClass}">
+                            ${isShowroom ? `<div class="showroom-badge">🏪 IN SHOWROOM</div>` : ''}
+                            <div class="result-content">
+                                <div class="bed-icon">🛏️</div>
+                                <div class="result-details">
+                                    <div class="result-title">${item.name}</div>
+                                    <div class="price-row">
+                                        <span class="price-label">PRICE:</span>
+                                        <span class="price-value">₹${item.price}</span>
+                                    </div>
+                                    <div class="offer-box">
+                                        <span class="offer-label">OFFER PRICE:</span>
+                                        <span class="offer-price">₹${item.offerPrice}</span>
+                                    </div>
+                                    <span class="save-badge">SAVE ₹${savingAmount} (30% OFF)</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
-
-        // Initialize
-        renderMattresses();
     </script>
 </body>
 </html>
